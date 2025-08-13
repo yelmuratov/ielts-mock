@@ -1,0 +1,6 @@
+@IELTSMockApi_HostAddress = http://localhost:5265
+
+GET {{IELTSMockApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
