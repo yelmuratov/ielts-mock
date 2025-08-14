@@ -1,0 +1,53 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow-sm" style="width: 100%; max-width: 400px">
+    <h3 class="text-center mb-4">Sign In</h3>
+
+    <!-- Global Error Message -->
+    <div *ngIf="error()" class="alert alert-danger text-center">
+      {{ error() }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          formControlName="username"
+          [class.is-invalid]="username?.touched && username?.invalid"
+        />
+        <div class="invalid-feedback" *ngIf="username?.touched && username?.hasError('required')">
+          Username is required.
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          formControlName="password"
+          [class.is-invalid]="password?.touched && password?.invalid"
+        />
+        <div class="invalid-feedback" *ngIf="password?.touched && password?.hasError('required')">
+          Password is required.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="form.invalid || loading()"
+        >
+          {{ loading() ? 'Logging in...' : 'Login' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
