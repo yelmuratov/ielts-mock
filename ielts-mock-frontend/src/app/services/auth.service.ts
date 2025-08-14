@@ -8,6 +8,12 @@ interface LoginCredentials {
   password: string;
 }
 
+interface RegisterCredentials {
+  username: string;
+  email: string;
+  password: string;
+}
+
 interface LoginResponse {
   id: number;
   username: string;
@@ -34,6 +40,7 @@ export class AuthService {
     return this._userRole;
   }
 
+  // ✅ LOGIN
   login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.http.post<LoginResponse>('/api/auth/login', credentials).pipe(
       tap((res) => {
@@ -45,7 +52,7 @@ export class AuthService {
         this._isLoggedIn.set(true);
         this._userRole.set(res.role);
 
-        // ✅ Role-based redirection
+        // Role-based redirect
         if (res.role === 'Admin') {
           this.router.navigate(['/admin']);
         } else {
@@ -55,6 +62,12 @@ export class AuthService {
     );
   }
 
+  // ✅ REGISTER
+  register(credentials: RegisterCredentials): Observable<any> {
+    return this.http.post('/api/auth/register', credentials);
+  }
+
+  // ✅ LOGOUT
   logout(): void {
     if (this.isBrowser()) {
       localStorage.removeItem('access_token');
@@ -66,6 +79,7 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
+  // ✅ Token and Role helpers
   getToken(): string | null {
     return this.isBrowser() ? localStorage.getItem('access_token') : null;
   }
