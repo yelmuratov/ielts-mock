@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: ielts-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ielts_user
+      POSTGRES_PASSWORD: ielts_pass
+      POSTGRES_DB: ielts_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./IELTSMockApi
+      dockerfile: Dockerfile
+    container_name: ielts-api
+    restart: always
+    ports:
+      - "5000:8080"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=ielts_db;Username=ielts_user;Password=ielts_pass
+    volumes:
+      - ./IELTSMockApi/wwwroot/uploads:/app/wwwroot/uploads
+
+volumes:
+  postgres_data:

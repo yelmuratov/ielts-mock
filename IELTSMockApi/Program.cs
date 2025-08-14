@@ -77,6 +77,14 @@ builder.Services.AddSwaggerGen(options =>
 // ---------- APP PIPELINE ----------
 var app = builder.Build();
 
+// ---- Apply Migrations ----
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); 
+    DataSeeder.SeedDatabase(app); 
+}
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -86,7 +94,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-DataSeeder.SeedDatabase(app);
 
 app.Run();

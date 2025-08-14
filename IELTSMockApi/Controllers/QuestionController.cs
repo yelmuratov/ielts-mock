@@ -20,7 +20,7 @@ public class QuestionController : ControllerBase
 
     // GET: api/question
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<IActionResult> GetAll()
     {
         var questions = await _context.Questions
@@ -40,7 +40,7 @@ public class QuestionController : ControllerBase
 
     // GET: api/question/{id}
     [HttpGet("{id}")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         var q = await _context.Questions.FindAsync(id);
@@ -134,7 +134,7 @@ public class QuestionController : ControllerBase
 
     // GET: api/question/by-test/{testId}
     [HttpGet("by-test/{testId}")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<IActionResult> GetByTest(int testId)
     {
         var questions = await _context.Questions
